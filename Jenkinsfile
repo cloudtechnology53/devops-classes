@@ -5,6 +5,7 @@ pipeline {
     string(name: 'VPC_CIDR', defaultValue: '10.0.0.0/16', description: 'VPC CIDR range')
     string(name: 'PUBLIC_SUBNET_1_CIDR', defaultValue: '10.0.1.0/24', description: 'Public Subnet 1 CIDR range')
     string(name: 'PUBLIC_SUBNET_2_CIDR', defaultValue: '10.0.2.0/24', description: 'Public Subnet 2 CIDR range')
+    choice(name: 'method', description: 'Select either apply or destroy',choices: ['apply', 'destroy'])
     
   }
 
