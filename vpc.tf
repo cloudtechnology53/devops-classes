@@ -1,34 +1,48 @@
-terraform {
-  backend "s3" {
-    bucket = "va-b6-dev-terraform-state"
-    key    = "terraform.tfstate"
-    region = "ap-south-1"
-    dynamodb_table = "va-b6-dev-dynamoDB"
-  }
-}
-
+# main.tf
 provider "aws" {
-  region = "${var.aws_region}"
+  region = "us-west-2"
 }
 
-resource "aws_vpc" "va-b6-prod-vpc" {
-  cidr_block       = "${var.vpc_cidr_block}"
-  instance_tenancy = "default"
+resource "aws_vpc" "example" {
+  cidr_block = "${var.vpc_cidr}"
 
   tags = {
-    Name = "va-b6-prod-vpc"
-    Environment = "prod"
-    copmany = "b6"
-
+    Name = "example-vpc"
   }
 }
 
-output "vpc-id" {
-  value = "${aws_vpc.va-b6-prod-vpc.id}"
+resource "aws_subnet" "public_1" {
+  cidr_block = "${var.public_subnet_cidr_1}"
+  vpc_id     = "${aws_vpc.example.id}"
+
+  tags = {
+    Name = "example-public-subnet-1"
+  }
 }
 
+resource "aws_subnet" "public_2" {
+  cidr_block = "${var.public_subnet_cidr_2}"
+  vpc_id     = "${aws_vpc.example.id}"
 
+  tags = {
+    Name = "example-public-subnet-2"
+  }
+}
 
+resource "aws_subnet" "private_1" {
+  cidr_block = "${var.private_subnet_cidr_1}"
+  vpc_id     = "${aws_vpc.example.id}"
 
+  tags = {
+    Name = "example-private-subnet-1"
+  }
+}
 
+resource "aws_subnet" "private_2" {
+  cidr_block = "${var.private_subnet_cidr_2}"
+  vpc_id     = "${aws_vpc.example.id}"
 
+  tags = {
+    Name = "example-private-subnet-2"
+  }
+}
