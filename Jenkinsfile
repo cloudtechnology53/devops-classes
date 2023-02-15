@@ -19,7 +19,7 @@ pipeline {
   stages {
     stage('Checkout Code') {
       steps {
-        checkout([$class: 'GitSCM', branches: [[name: '*/main']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/cloudtechnology53/devops-classes.git']]])
+        checkout([$class: 'GitSCM', branches: [[name: '*/dev']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/cloudtechnology53/devops-classes.git']]])
       }
     }
     stage('Terraform Init') {
