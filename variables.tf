@@ -1,4 +1,12 @@
 # VPC Variables
+variable "access_key" {
+  type = string
+}
+
+variable "secret_key" {
+  type = string
+}
+
 variable "region" {
   default       = "ap-south-1"
   description   = "AWS Region"
