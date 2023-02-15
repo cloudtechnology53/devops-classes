@@ -36,7 +36,7 @@ pipeline {
 
     stage('Terraform Apply') {
       steps {
-        sh "terraform apply -auto-approve -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' -var 'vpc-cidr=${params.VPC_CIDR}' -var 'public-subnet-1-cidr=${params.PUBLIC_SUBNET_1_CIDR}' -var 'public-subnet-2-cidr=${params.PUBLIC_SUBNET_2_CIDR}'"
+        sh "terraform $method -auto-approve -var 'access_key=$ACCESS_KEY' -var 'secret_key=$SECRET_KEY' -var 'vpc-cidr=${params.VPC_CIDR}' -var 'public-subnet-1-cidr=${params.PUBLIC_SUBNET_1_CIDR}' -var 'public-subnet-2-cidr=${params.PUBLIC_SUBNET_2_CIDR}'"
       }
     }
   }
