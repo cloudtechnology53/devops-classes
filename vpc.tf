@@ -1,48 +1,108 @@
-# main.tf
-provider "aws" {
-  region = "us-west-2"
-}
+# Create VPC
+# terraform aws create vpc
+resource "aws_vpc" "vpc" {
+  cidr_block              = "${var.vpc-cidr}"
+  instance_tenancy        = "default"
+  enable_dns_hostnames    = true
 
-resource "aws_vpc" "example" {
-  cidr_block = "${var.vpc_cidr}"
-
-  tags = {
-    Name = "example-vpc"
+  tags      = {
+    Name    = "Test VPC"
   }
 }
 
-resource "aws_subnet" "public_1" {
-  cidr_block = "${var.public_subnet_cidr_1}"
-  vpc_id     = "${aws_vpc.example.id}"
+/*
+# Create Internet Gateway and Attach it to VPC
+# terraform aws create internet gateway
+resource "aws_internet_gateway" "internet-gateway" {
+  vpc_id    = aws_vpc.vpc.id
 
-  tags = {
-    Name = "example-public-subnet-1"
+  tags      = {
+    Name    = "Test IGW"
   }
 }
 
-resource "aws_subnet" "public_2" {
-  cidr_block = "${var.public_subnet_cidr_2}"
-  vpc_id     = "${aws_vpc.example.id}"
+*/
 
-  tags = {
-    Name = "example-public-subnet-2"
+# Create Public Subnet 1
+# terraform aws create subnet
+resource "aws_subnet" "public-subnet-1" {
+  vpc_id                  = aws_vpc.vpc.id
+  cidr_block              = "${var.public-subnet-1-cidr}"
+  availability_zone       = "eu-west-1a"
+  map_public_ip_on_launch = false
+
+  tags      = {
+    Name    = "Public Subnet 1"
   }
 }
 
-resource "aws_subnet" "private_1" {
-  cidr_block = "${var.private_subnet_cidr_1}"
-  vpc_id     = "${aws_vpc.example.id}"
+# Create Public Subnet 2
+# terraform aws create subnet
+resource "aws_subnet" "public-subnet-2" {
+  vpc_id                  = aws_vpc.vpc.id
+  cidr_block              = "${var.public-subnet-2-cidr}"
+  availability_zone       = "eu-west-1b"
+  map_public_ip_on_launch = false
 
-  tags = {
-    Name = "example-private-subnet-1"
+  tags      = {
+    Name    = "Public Subnet 2"
   }
 }
 
-resource "aws_subnet" "private_2" {
-  cidr_block = "${var.private_subnet_cidr_2}"
-  vpc_id     = "${aws_vpc.example.id}"
+/*
+# Create Route Table and Add Public Route
+# terraform aws create route table
+resource "aws_route_table" "public-route-table" {
+  vpc_id       = aws_vpc.vpc.id
 
-  tags = {
-    Name = "example-private-subnet-2"
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.internet-gateway.id
+  }
+
+  tags       = {
+    Name     = "Public Route Table"
   }
 }
+
+# Associate Public Subnet 1 to "Public Route Table"
+# terraform aws associate subnet with route table
+resource "aws_route_table_association" "public-subnet-1-route-table-association" {
+  subnet_id           = aws_subnet.public-subnet-1.id
+  route_table_id      = aws_route_table.public-route-table.id
+}
+
+# Associate Public Subnet 2 to "Public Route Table"
+# terraform aws associate subnet with route table
+resource "aws_route_table_association" "public-subnet-2-route-table-association" {
+  subnet_id           = aws_subnet.public-subnet-2.id
+  route_table_id      = aws_route_table.public-route-table.id
+}
+
+# Create Private Subnet 1
+# terraform aws create subnet
+resource "aws_subnet" "private-subnet-1" {
+  vpc_id                   = aws_vpc.vpc.id
+  cidr_block               = "${var.private-subnet-1-cidr}"
+  availability_zone        = "eu-west-1a"
+  map_public_ip_on_launch  = false
+
+  tags      = {
+    Name    = "Private Subnet 1 | App Tier"
+  }
+}
+
+# Create Private Subnet 2
+# terraform aws create subnet
+resource "aws_subnet" "private-subnet-2" {
+  vpc_id                   = aws_vpc.vpc.id
+  cidr_block               = "${var.private-subnet-2-cidr}"
+  availability_zone        = "eu-west-1b"
+  map_public_ip_on_launch  = false
+
+  tags      = {
+    Name    = "Private Subnet 2 | App Tier"
+  }
+}
+
+*/
