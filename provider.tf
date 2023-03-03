@@ -7,6 +7,6 @@ terraform {
     bucket         = "va-b6-dev-terraform-state"
     key            = "terraform.tfstate"
     region         = "ap-south-1"
-    #dynamodb_table = "javahome-tf"
+    #dynamodb_table = "va-b6-dev-tf"
   }
 }
